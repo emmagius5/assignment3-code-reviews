@@ -34,6 +34,7 @@ def update_assignments(data, centroids):
 
     # Assign each point to its nearest centroid
     # np.argmin chooses the lowest index in case of a tie
+    # This finds the centroid with the smallest distance from each point and returns an array of shape n containg the assignment
     assignments = np.argmin(distances, axis=1)
 
     return assignments
@@ -78,13 +79,17 @@ def kmeans(data, centroids, max_iterations=100):
     for _ in range(max_iterations):
         assignments = update_assignments(data, centroids)
         centroids = update_centroids(data, centroids, assignments)
+
     assignments = update_assignments(data, centroids)
+
     return centroids, assignments
 
 
 def make_toy_data():
     """Generate the exact make_blobs configuration from Assignment 4."""
+
     from sklearn.datasets import make_blobs
+
     return make_blobs(n_samples=4000, centers=4, cluster_std=0.60, random_state=0)
 
 
@@ -94,6 +99,7 @@ def get_initial_clusters(k, data, rng):
     This adaptation accepts a seeded NumPy generator for reproducibility.
     Repeated initial rows are possible; your empty-cluster policy must cope.
     """
+
     return data[rng.integers(0, data.shape[0], size=k)].copy()
 
 
@@ -174,12 +180,15 @@ def run_experiments(output_dir, seed=0, max_iterations=100):
 
 
 def main():
+
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--max-iterations", type=int, default=100)
     parser.add_argument("--output-dir", type=Path,
                         default=Path(__file__).resolve().parent / "results" / "kmeans")
+
     args = parser.parse_args()
+
     run_experiments(args.output_dir, args.seed, args.max_iterations)
 
 

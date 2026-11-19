@@ -21,6 +21,7 @@ def generate_clean_split(rng, samples_per_class=1000):
     The negative covariance entries are variances, not standard deviations.
     """
     import numpy as np
+    
     positive = rng.multivariate_normal((1, 1), np.eye(2), samples_per_class)
     negative = rng.multivariate_normal((-1, -1), 3 * np.eye(2), samples_per_class)
     features = np.vstack((positive, negative))
@@ -126,6 +127,7 @@ def train_and_evaluate(train_features, train_labels, test_features, test_labels)
 
     model = SVC(kernel="rbf", C=SVM_C, gamma=SVM_GAMMA)
     model.fit(train_features, train_labels)
+
     return float(accuracy_score(test_labels, model.predict(test_features)))
 
 
@@ -215,14 +217,18 @@ def run_comparison(repeats, seed, neighbors, output_path):
 
 
 def main():
+
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--repeats", type=int, default=20)
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--neighbors", type=int, default=5,
                         choices=(5,), help="Use five neighbors for this assignment.")
+
     parser.add_argument("--output", type=Path,
                         default=Path(__file__).resolve().parent / "results" / "noise_comparison.csv")
+
     args = parser.parse_args()
+    
     run_comparison(args.repeats, args.seed, args.neighbors, args.output)
 
 
