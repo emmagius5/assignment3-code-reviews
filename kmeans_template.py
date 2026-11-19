@@ -34,7 +34,8 @@ def update_assignments(data, centroids):
 
     # Assign each point to its nearest centroid
     # np.argmin chooses the lowest index in case of a tie
-    # This finds the centroid with the smallest distance from each point and returns an array of shape n containg the assignment
+    # This finds the centroid with the smallest distance from each point and returns an array of shape n containg the 
+    # index of the cluster that point is assigned to
     assignments = np.argmin(distances, axis=1)
 
     return assignments
